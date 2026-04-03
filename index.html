@@ -2,145 +2,105 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Моя первая страница</title>
+  <title>Регистрация</title>
+
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 500px;
-      margin: 50px auto;
+      font-family: Arial;
+      background: #f4f4f4;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .box {
+      background: white;
       padding: 20px;
-      background-color: #696969;
+      border-radius: 10px;
+      width: 320px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    input, textarea {
+    h2 {
+      text-align: center;
+    }
+
+    input, button {
       width: 100%;
+      margin-top: 10px;
       padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-
-    button {
-      padding: 10px 20px;
-      margin: 5px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      /* Плавный переход при наведении */
-      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-green {
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    /* Эффект при наведении на зелёную кнопку */
-    .btn-green:hover {
-      background-color: #388E3C;
-      transform: scale(1.1);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    .btn-red {
-      background-color: #f44336;
-      color: white;
-    }
-
-    /* Эффект при наведении на красную кнопку */
-    .btn-red:hover {
-      background-color: #c62828;
-      transform: scale(1.1);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    /* Блок где появляются сообщения */
-    #результат {
-      margin-top: 30px;
-    }
-
-    /* Стиль одного сообщения */
-    .сообщение {
-      background-color: white;
-      border-left: 5px solid #4CAF50;
-      padding: 10px 15px;
-      margin: 10px 0;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      /* Плавное появление */
-      animation: появление 0.3s ease;
-    }
-
-    @keyframes появление {
-      from { opacity: 0; transform: translateY(-10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .сообщение p {
-      margin: 3px 0;
       font-size: 14px;
     }
 
-    .сообщение span {
-      font-weight: bold;
-      color: #4CAF50;
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    #msg {
+      margin-top: 10px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <h1>Моя страница</h1>
+<div class="box">
+  <h2>Регистрация</h2>
 
-  <!-- Поля для текста -->
-  <input type="text" id="имя" placeholder="Введи своё имя">
-  <input type="text" id="email" placeholder="Введи email">
-  <textarea id="сообщение" rows="4" placeholder="Напиши сообщение..."></textarea>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Пароль">
 
-  <!-- Кнопки -->
-  <button class="btn-green" onclick="добавитьСообщение()">Отправить</button>
-  <button class="btn-red" onclick="очистить()">Очистить</button>
+  <button onclick="register()">Зарегистрироваться</button>
 
-  <!-- Сюда будут добавляться сообщения -->
-  <div id="результат"></div>
+  <p id="msg"></p>
+</div>
 
-  <script>
-    function добавитьСообщение() {
-      // Берём текст из полей
-      const имя = document.getElementById('имя').value;
-      const email = document.getElementById('email').value;
-      const сообщение = document.getElementById('сообщение').value;
+<!-- ВАЖНО: используем современный Firebase (v10) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-      // Проверяем что хоть что-то введено
-      if (!имя && !email && !сообщение) {
-        alert('Введи хоть что-нибудь!');
-        return;
-      }
+  const firebaseConfig = {
+    apiKey: "AIzaSyB7UrSp5zmwwahOz4tsbq8rYWqUoEIu5_k",
+    authDomain: "testpage-da094.firebaseapp.com",
+    projectId: "testpage-da094",
+    storageBucket: "testpage-da094.firebasestorage.app",
+    messagingSenderId: "938184243668",
+    appId: "1:938184243668:web:2cb527ec7f5cd41e0a7e41",
+    measurementId: "G-5MF3D79SSD"
+  };
 
-      // Создаём новый блок с сообщением
-      const блок = document.createElement('div');
-      блок.className = 'сообщение';
-      блок.innerHTML = `
-        <p><span>Имя:</span> ${имя || '—'}</p>
-        <p><span>Email:</span> ${email || '—'}</p>
-        <p><span>Сообщение:</span> ${сообщение || '—'}</p>
-      `;
+  // Инициализация Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-      // Добавляем блок на страницу
-      document.getElementById('результат').appendChild(блок);
+  // делаем функцию доступной из HTML
+  window.register = async function () {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const msg = document.getElementById('msg');
 
-      // Очищаем поля после отправки
-      очистить();
+    if (!email || !password) {
+      msg.innerText = "Заполни все поля";
+      return;
     }
 
-    function очистить() {
-      document.getElementById('имя').value = '';
-      document.getElementById('email').value = '';
-      document.getElementById('сообщение').value = '';
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      msg.innerText = "Регистрация успешна ✅";
+    } catch (error) {
+      msg.innerText = error.message;
     }
-  </script>
+  };
+</script>
 
 </body>
 </html>
