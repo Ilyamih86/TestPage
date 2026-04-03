@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Auth App</title>
+  <title>Профиль</title>
 
   <style>
     body {
@@ -35,10 +35,7 @@
       cursor: pointer;
     }
 
-    #profile {
-      display: none;
-      text-align: center;
-    }
+    #profile { display: none; }
   </style>
 </head>
 <body>
@@ -48,20 +45,22 @@
   <!-- AUTH -->
   <div id="auth">
     <h2>Регистрация / Вход</h2>
-
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Пароль">
-
     <button onclick="register()">Регистрация</button>
     <button onclick="login()">Вход</button>
-
     <p id="msg"></p>
   </div>
 
   <!-- PROFILE -->
   <div id="profile">
     <h2>Профиль</h2>
+
+    <input type="text" id="name" placeholder="Ваше имя">
+    <button onclick="saveProfile()">Сохранить</button>
+
     <p id="userEmail"></p>
+
     <button onclick="logout()">Выйти</button>
   </div>
 
@@ -69,13 +68,20 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { 
-    getAuth, 
-    createUserWithEmailAndPassword, 
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyB7UrSp5zmwwahOz4tsbq8rYWqUoEIu5_k",
@@ -87,21 +93,31 @@
     measurementId: "G-5MF3D79SSD"
   };
 
+
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
   const msg = document.getElementById('msg');
   const authBlock = document.getElementById('auth');
   const profileBlock = document.getElementById('profile');
   const userEmail = document.getElementById('userEmail');
+  const nameInput = document.getElementById('name');
 
   // Регистрация
   window.register = async () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = email.value;
+    const password = password.value;
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+
+      // создаём профиль
+      await setDoc(doc(db, "users", userCred.user.uid), {
+        email: email,
+        name: ""
+      });
+
       msg.innerText = "Регистрация успешна ✅";
     } catch (e) {
       msg.innerText = e.message;
@@ -110,15 +126,24 @@
 
   // Вход
   window.login = async () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      msg.innerText = "Вход выполнен ✅";
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      msg.innerText = "Вход выполнен";
     } catch (e) {
       msg.innerText = e.message;
     }
+  };
+
+  // Сохранение профиля
+  window.saveProfile = async () => {
+    const user = auth.currentUser;
+
+    await setDoc(doc(db, "users", user.uid), {
+      email: user.email,
+      name: nameInput.value
+    });
+
+    alert("Сохранено ✅");
   };
 
   // Выход
@@ -126,12 +151,21 @@
     await signOut(auth);
   };
 
-  // Отслеживание состояния
-  onAuthStateChanged(auth, (user) => {
+  // Загрузка профиля
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       authBlock.style.display = "none";
       profileBlock.style.display = "block";
+
       userEmail.innerText = "Email: " + user.email;
+
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        nameInput.value = docSnap.data().name || "";
+      }
+
     } else {
       authBlock.style.display = "block";
       profileBlock.style.display = "none";
