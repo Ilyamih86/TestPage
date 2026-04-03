@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Регистрация</title>
+  <title>Auth App</title>
 
   <style>
     body {
@@ -22,15 +22,10 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    h2 {
-      text-align: center;
-    }
-
     input, button {
       width: 100%;
       margin-top: 10px;
       padding: 10px;
-      font-size: 14px;
     }
 
     button {
@@ -40,12 +35,8 @@
       cursor: pointer;
     }
 
-    button:hover {
-      background: #45a049;
-    }
-
-    #msg {
-      margin-top: 10px;
+    #profile {
+      display: none;
       text-align: center;
     }
   </style>
@@ -53,53 +44,97 @@
 <body>
 
 <div class="box">
-  <h2>Регистрация</h2>
 
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Пароль">
+  <!-- AUTH -->
+  <div id="auth">
+    <h2>Регистрация / Вход</h2>
 
-  <button onclick="register()">Зарегистрироваться</button>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Пароль">
 
-  <p id="msg"></p>
+    <button onclick="register()">Регистрация</button>
+    <button onclick="login()">Вход</button>
+
+    <p id="msg"></p>
+  </div>
+
+  <!-- PROFILE -->
+  <div id="profile">
+    <h2>Профиль</h2>
+    <p id="userEmail"></p>
+    <button onclick="logout()">Выйти</button>
+  </div>
+
 </div>
 
-<!-- ВАЖНО: используем современный Firebase (v10) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyB7UrSp5zmwwahOz4tsbq8rYWqUoEIu5_k",
-    authDomain: "testpage-da094.firebaseapp.com",
-    projectId: "testpage-da094",
-    storageBucket: "testpage-da094.firebasestorage.app",
-    messagingSenderId: "938184243668",
-    appId: "1:938184243668:web:2cb527ec7f5cd41e0a7e41",
-    measurementId: "G-5MF3D79SSD"
+    apiKey: "ТВОЙ_API_KEY",
+    authDomain: "ТВОЙ_PROJECT.firebaseapp.com",
+    projectId: "ТВОЙ_PROJECT",
+    appId: "ТВОЙ_APP_ID"
   };
 
-  // Инициализация Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // делаем функцию доступной из HTML
-  window.register = async function () {
+  const msg = document.getElementById('msg');
+  const authBlock = document.getElementById('auth');
+  const profileBlock = document.getElementById('profile');
+  const userEmail = document.getElementById('userEmail');
+
+  // Регистрация
+  window.register = async () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const msg = document.getElementById('msg');
-
-    if (!email || !password) {
-      msg.innerText = "Заполни все поля";
-      return;
-    }
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       msg.innerText = "Регистрация успешна ✅";
-    } catch (error) {
-      msg.innerText = error.message;
+    } catch (e) {
+      msg.innerText = e.message;
     }
   };
+
+  // Вход
+  window.login = async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      msg.innerText = "Вход выполнен ✅";
+    } catch (e) {
+      msg.innerText = e.message;
+    }
+  };
+
+  // Выход
+  window.logout = async () => {
+    await signOut(auth);
+  };
+
+  // Отслеживание состояния
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      authBlock.style.display = "none";
+      profileBlock.style.display = "block";
+      userEmail.innerText = "Email: " + user.email;
+    } else {
+      authBlock.style.display = "block";
+      profileBlock.style.display = "none";
+    }
+  });
+
 </script>
 
 </body>
