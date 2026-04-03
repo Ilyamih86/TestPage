@@ -5,48 +5,265 @@
   <title>Профиль</title>
 
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial;
-      background: #f4f4f4;
+      font-family: 'Arial', sans-serif;
+      background: #0f0f0f;
       display: flex;
       height: 100vh;
       align-items: center;
       justify-content: center;
+      color: #f1f1f1;
     }
 
     .box {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 320px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background: #212121;
+      padding: 35px 30px;
+      border-radius: 12px;
+      width: 360px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
     }
 
-    input, button {
+    /* Логотип вверху */
+    .logo {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo span {
+      font-size: 28px;
+      font-weight: bold;
+      color: #f1f1f1;
+    }
+
+    .logo span b {
+      color: #ff0000;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #f1f1f1;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Поля ввода */
+    .input-group {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    input {
       width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      box-sizing: border-box;
+      padding: 12px 15px;
+      background: #121212;
+      border: 1px solid #303030;
+      border-radius: 8px;
+      color: #f1f1f1;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    button {
-      background: #4CAF50;
-      color: white;
+    input:focus {
+      border-color: #3ea6ff;
+      box-shadow: 0 0 0 2px rgba(62,166,255,0.15);
+    }
+
+    input::placeholder {
+      color: #555;
+    }
+
+    /* Кнопки */
+    .btn {
+      width: 100%;
+      padding: 12px;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      margin-top: 10px;
+      letter-spacing: 0.3px;
     }
 
-    button:hover {
-      background: #388E3C;
+    .btn:active {
+      transform: scale(0.98);
     }
 
-    #profile { display: none; }
+    /* Синяя кнопка (основная) */
+    .btn-primary {
+      background: #3ea6ff;
+      color: #0f0f0f;
+    }
 
+    .btn-primary:hover {
+      background: #65b8ff;
+      box-shadow: 0 4px 15px rgba(62,166,255,0.3);
+    }
+
+    /* Серая кнопка (второстепенная) */
+    .btn-secondary {
+      background: #303030;
+      color: #f1f1f1;
+    }
+
+    .btn-secondary:hover {
+      background: #3f3f3f;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Красная кнопка (выход) */
+    .btn-danger {
+      background: transparent;
+      color: #ff4444;
+      border: 1px solid #ff4444;
+    }
+
+    .btn-danger:hover {
+      background: rgba(255,68,68,0.1);
+      box-shadow: 0 4px 15px rgba(255,68,68,0.2);
+    }
+
+    /* Разделитель */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #303030;
+    }
+
+    .divider span {
+      color: #555;
+      font-size: 13px;
+    }
+
+    /* Сообщения */
     #msg {
-      color: red;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 12px;
+      min-height: 18px;
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    #msg.success {
+      background: rgba(62,166,255,0.1);
+      color: #3ea6ff;
+    }
+
+    #msg.error {
+      background: rgba(255,68,68,0.1);
+      color: #ff4444;
+    }
+
+    /* Профиль */
+    #profile {
+      display: none;
+    }
+
+    /* Аватар */
+    .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #3ea6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #0f0f0f;
+      margin: 0 auto 20px;
+      text-transform: uppercase;
+    }
+
+    /* Email пользователя */
+    .user-email {
+      text-align: center;
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #303030;
+    }
+
+    /* Переключение форм */
+    .switch-text {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .switch-text a {
+      color: #3ea6ff;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .switch-text a:hover {
+      text-decoration: underline;
+    }
+
+    /* Вкладки входа и регистрации */
+    .tabs {
+      display: flex;
+      background: #121212;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 25px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
       font-size: 14px;
+      color: #aaa;
+      transition: background 0.2s, color 0.2s;
+      user-select: none;
+    }
+
+    .tab.active {
+      background: #303030;
+      color: #f1f1f1;
+    }
+
+    /* Анимация появления */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .box {
+      animation: fadeIn 0.3s ease;
     }
   </style>
 </head>
@@ -54,23 +271,62 @@
 
 <div class="box">
 
+  <!-- ЛОГОТИП -->
+  <div class="logo">
+    <span>My<b>App</b></span>
+  </div>
+
   <!-- AUTH -->
   <div id="auth">
-    <h2>Регистрация / Вход</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Пароль">
-    <button onclick="register()">Регистрация</button>
-    <button onclick="login()">Вход</button>
+
+    <!-- Вкладки -->
+    <div class="tabs">
+      <div class="tab active" id="tab-login" onclick="switchTab('login')">Вход</div>
+      <div class="tab" id="tab-register" onclick="switchTab('register')">Регистрация</div>
+    </div>
+
+    <div class="input-group">
+      <label>EMAIL</label>
+      <input type="email" id="email" placeholder="example@mail.com">
+    </div>
+
+    <div class="input-group">
+      <label>ПАРОЛЬ</label>
+      <input type="password" id="password" placeholder="••••••••">
+    </div>
+
+    <!-- Кнопка меняется в зависимости от вкладки -->
+    <button class="btn btn-primary" id="mainBtn" onclick="handleAuth()">
+      Войти
+    </button>
+
     <p id="msg"></p>
+
   </div>
 
   <!-- PROFILE -->
   <div id="profile">
-    <h2>Профиль</h2>
-    <input type="text" id="name" placeholder="Ваше имя">
-    <button onclick="saveProfile()">Сохранить</button>
-    <p id="userEmail"></p>
-    <button onclick="logout()">Выйти</button>
+
+    <!-- Аватар с первой буквой имени -->
+    <div class="avatar" id="avatar">?</div>
+
+    <h2 id="profileName">Профиль</h2>
+
+    <p class="user-email" id="userEmail"></p>
+
+    <div class="input-group">
+      <label>ВАШ НИКНЕЙМ</label>
+      <input type="text" id="name" placeholder="Введите никнейм">
+    </div>
+
+    <button class="btn btn-primary" onclick="saveProfile()">
+      Сохранить изменения
+    </button>
+
+    <button class="btn btn-danger" onclick="logout()" style="margin-top: 10px">
+      Выйти из аккаунта
+    </button>
+
   </div>
 
 </div>
@@ -104,71 +360,113 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  const msg = document.getElementById('msg');
+  const msgEl = document.getElementById('msg');
   const authBlock = document.getElementById('auth');
   const profileBlock = document.getElementById('profile');
   const userEmailEl = document.getElementById('userEmail');
   const nameInput = document.getElementById('name');
+  const avatarEl = document.getElementById('avatar');
+  const profileNameEl = document.getElementById('profileName');
+  const mainBtn = document.getElementById('mainBtn');
 
-  // ✅ Исправлена ошибка с именами переменных
-  window.register = async () => {
+  // Текущая вкладка
+  let currentTab = 'login';
+
+  // Переключение вкладок
+  window.switchTab = (tab) => {
+    currentTab = tab;
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+    mainBtn.textContent = tab === 'login' ? 'Войти' : 'Зарегистрироваться';
+    showMsg('', '');
+  };
+
+  // Показ сообщений
+  function showMsg(text, type) {
+    msgEl.textContent = text;
+    msgEl.className = type;
+  }
+
+  // Обработка кнопки входа/регистрации
+  window.handleAuth = async () => {
     const emailValue = document.getElementById('email').value;
     const passwordValue = document.getElementById('password').value;
 
-    try {
-      const userCred = await createUserWithEmailAndPassword(auth, emailValue, passwordValue);
-
-      await setDoc(doc(db, "users", userCred.user.uid), {
-        email: emailValue,
-        name: ""
-      });
-
-      msg.style.color = "green";
-      msg.innerText = "Регистрация успешна ✅";
-    } catch (e) {
-      msg.style.color = "red";
-      msg.innerText = e.message;
+    if (!emailValue || !passwordValue) {
+      showMsg('Заполните все поля', 'error');
+      return;
     }
-  };
 
-  // ✅ Исправлена ошибка с именами переменных
-  window.login = async () => {
-    const emailValue = document.getElementById('email').value;
-    const passwordValue = document.getElementById('password').value;
+    mainBtn.textContent = 'Загрузка...';
+    mainBtn.disabled = true;
 
     try {
-      await signInWithEmailAndPassword(auth, emailValue, passwordValue);
-      msg.innerText = "";
+      if (currentTab === 'register') {
+        const userCred = await createUserWithEmailAndPassword(auth, emailValue, passwordValue);
+        await setDoc(doc(db, "users", userCred.user.uid), {
+          email: emailValue,
+          name: ""
+        });
+        showMsg('Регистрация успешна ✅', 'success');
+      } else {
+        await signInWithEmailAndPassword(auth, emailValue, passwordValue);
+      }
     } catch (e) {
-      msg.style.color = "red";
-      msg.innerText = e.message;
+      // Понятные сообщения об ошибках
+      const errors = {
+        'auth/invalid-email': 'Неверный формат email',
+        'auth/wrong-password': 'Неверный пароль',
+        'auth/user-not-found': 'Пользователь не найден',
+        'auth/email-already-in-use': 'Email уже используется',
+        'auth/weak-password': 'Пароль слишком короткий (минимум 6 символов)',
+      };
+      showMsg(errors[e.code] || e.message, 'error');
     }
+
+    mainBtn.textContent = currentTab === 'login' ? 'Войти' : 'Зарегистрироваться';
+    mainBtn.disabled = false;
   };
 
+  // Сохранение профиля
   window.saveProfile = async () => {
     const user = auth.currentUser;
+    const newName = nameInput.value;
 
     await setDoc(doc(db, "users", user.uid), {
       email: user.email,
-      name: nameInput.value
+      name: newName
     });
+
+    // Обновляем аватар и имя
+    updateAvatar(newName || user.email);
+    profileNameEl.textContent = newName || 'Профиль';
 
     alert("Сохранено ✅");
   };
 
+  // Выход
   window.logout = async () => {
     await signOut(auth);
   };
 
+  // Обновление аватара
+  function updateAvatar(text) {
+    avatarEl.textContent = text ? text[0].toUpperCase() : '?';
+  }
+
+  // Отслеживание состояния авторизации
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       authBlock.style.display = "none";
       profileBlock.style.display = "block";
-      userEmailEl.innerText = "Email: " + user.email;
+      userEmailEl.textContent = user.email;
 
       const docSnap = await getDoc(doc(db, "users", user.uid));
       if (docSnap.exists()) {
-        nameInput.value = docSnap.data().name || "";
+        const data = docSnap.data();
+        nameInput.value = data.name || "";
+        profileNameEl.textContent = data.name || "Профиль";
+        updateAvatar(data.name || user.email);
       }
     } else {
       authBlock.style.display = "block";
