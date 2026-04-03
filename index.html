@@ -20,7 +20,7 @@
     }
 
     /* ========================
-       СТРАНИЦА АВТОРИЗАЦИИ
+       АВТОРИЗАЦИЯ
     ======================== */
     #authPage {
       display: flex;
@@ -145,7 +145,7 @@
       flex-direction: column;
     }
 
-    /* --- Шапка --- */
+    /* Шапка */
     .topbar {
       height: 60px;
       background: #212121;
@@ -203,7 +203,7 @@
     .profile-name  { font-size: 14px; font-weight: 600; }
     .profile-email { font-size: 11px; color: #aaa; }
 
-    /* Дропдаун профиля */
+    /* Дропдаун */
     .profile-dropdown {
       display: none;
       position: absolute;
@@ -265,17 +265,18 @@
     .dropdown-btn-logout:hover { background: rgba(255,68,68,0.1); }
 
     /* ========================
-       ОСНОВНОЙ LAYOUT
+       LAYOUT
     ======================== */
     .layout {
       display: flex;
       flex: 1;
       overflow: hidden;
+      height: calc(100vh - 60px);
     }
 
-    /* --- Левая панель — кто онлайн --- */
+    /* Левая панель — онлайн */
     .sidebar {
-      width: 240px;
+      width: 220px;
       background: #181818;
       border-right: 1px solid #303030;
       display: flex;
@@ -296,14 +297,13 @@
       gap: 8px;
     }
 
-    /* Зелёная точка онлайн */
     .online-dot {
       width: 8px;
       height: 8px;
       background: #2ecc71;
       border-radius: 50%;
-      display: inline-block;
       box-shadow: 0 0 6px #2ecc71;
+      flex-shrink: 0;
     }
 
     .online-count {
@@ -323,10 +323,8 @@
     }
 
     .online-list::-webkit-scrollbar { width: 3px; }
-    .online-list::-webkit-scrollbar-track { background: #181818; }
     .online-list::-webkit-scrollbar-thumb { background: #303030; border-radius: 2px; }
 
-    /* Один пользователь онлайн */
     .online-user {
       display: flex;
       align-items: center;
@@ -355,7 +353,6 @@
       position: relative;
     }
 
-    /* Зелёная точка у аватара */
     .online-user-avatar::after {
       content: '';
       position: absolute;
@@ -376,14 +373,15 @@
       text-overflow: ellipsis;
     }
 
-    /* Ты сам */
-    .online-user-name.is-you::after {
-      content: ' (ты)';
-      color: #3ea6ff;
+    .you-label {
       font-size: 11px;
+      color: #3ea6ff;
+      margin-left: 2px;
     }
 
-    /* --- Центральная область --- */
+    /* ========================
+       ОБЛАСТЬ ЧАТА
+    ======================== */
     .chat-area {
       flex: 1;
       display: flex;
@@ -391,13 +389,11 @@
       overflow: hidden;
     }
 
-    /* Заголовок чата */
     .chat-header {
       padding: 15px 20px;
       border-bottom: 1px solid #303030;
       font-size: 15px;
       font-weight: 600;
-      color: #f1f1f1;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -411,11 +407,10 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .messages::-webkit-scrollbar { width: 4px; }
-    .messages::-webkit-scrollbar-track { background: #0f0f0f; }
     .messages::-webkit-scrollbar-thumb { background: #303030; border-radius: 2px; }
 
     /* Одно сообщение */
@@ -423,10 +418,9 @@
       display: flex;
       gap: 12px;
       animation: fadeIn 0.3s ease;
-      max-width: 75%;
+      max-width: 70%;
     }
 
-    /* Моё сообщение — справа */
     .message.mine {
       align-self: flex-end;
       flex-direction: row-reverse;
@@ -449,7 +443,7 @@
     }
 
     .message.mine .message-avatar {
-      background: #65b8ff;
+      background: #1a6bb5;
     }
 
     .message-body {
@@ -470,21 +464,20 @@
 
     .message-bubble {
       background: #212121;
-      border: 1px solid #303030;
+      border: 1px solid #2a2a2a;
       padding: 10px 14px;
-      border-radius: 12px;
+      border-radius: 16px;
       border-bottom-left-radius: 4px;
       font-size: 14px;
-      color: #f1f1f1;
       line-height: 1.5;
       word-break: break-word;
+      white-space: pre-wrap;
     }
 
-    /* Моё сообщение — другой цвет */
     .message.mine .message-bubble {
       background: #1a3a5c;
       border-color: #1e4a7a;
-      border-bottom-left-radius: 12px;
+      border-bottom-left-radius: 16px;
       border-bottom-right-radius: 4px;
     }
 
@@ -501,14 +494,14 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #555;
-      gap: 10px;
+      color: #444;
+      gap: 12px;
     }
 
-    .empty-chat div { font-size: 48px; }
-    .empty-chat p   { font-size: 15px; }
+    .empty-chat .empty-icon { font-size: 52px; }
+    .empty-chat p { font-size: 15px; }
 
-    /* --- Ввод сообщения снизу --- */
+    /* Ввод сообщения */
     .chat-input-area {
       padding: 15px 20px;
       border-top: 1px solid #303030;
@@ -524,7 +517,7 @@
       border: 1px solid #303030;
       border-radius: 12px;
       padding: 10px 15px;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .chat-input-wrapper:focus-within {
@@ -555,10 +548,7 @@
       flex-shrink: 0;
     }
 
-    .char-counter {
-      font-size: 11px;
-      color: #555;
-    }
+    .char-counter { font-size: 11px; color: #555; }
 
     .send-btn {
       width: 36px;
@@ -567,7 +557,7 @@
       color: #0f0f0f;
       border: none;
       border-radius: 50%;
-      font-size: 16px;
+      font-size: 18px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -576,11 +566,10 @@
       flex-shrink: 0;
     }
 
-    .send-btn:hover   { background: #65b8ff; }
-    .send-btn:active  { transform: scale(0.92); }
+    .send-btn:hover  { background: #65b8ff; }
+    .send-btn:active { transform: scale(0.92); }
     .send-btn:disabled { background: #2a5f8f; cursor: not-allowed; }
 
-    /* Подсказка */
     .input-hint {
       text-align: center;
       font-size: 11px;
@@ -602,8 +591,8 @@
     <div class="logo"><span>My<b>App</b></span></div>
 
     <div class="tabs">
-      <div class="tab active" id="tab-login" onclick="switchTab('login')">Вход</div>
-      <div class="tab" id="tab-register" onclick="switchTab('register')">Регистрация</div>
+      <div class="tab active" id="tab-login"    onclick="switchTab('login')">Вход</div>
+      <div class="tab"        id="tab-register" onclick="switchTab('register')">Регистрация</div>
     </div>
 
     <div class="input-group">
@@ -646,7 +635,6 @@
     </div>
   </div>
 
-  <!-- Layout -->
   <div class="layout">
 
     <!-- Левая панель — онлайн -->
@@ -662,19 +650,15 @@
     <!-- Чат -->
     <div class="chat-area">
 
-      <div class="chat-header">
-        💬 Общий чат
-      </div>
+      <div class="chat-header">💬 Общий чат</div>
 
-      <!-- Сообщения -->
       <div class="messages" id="messages">
         <div class="empty-chat">
-          <div>💬</div>
+          <div class="empty-icon">💬</div>
           <p>Напишите первое сообщение!</p>
         </div>
       </div>
 
-      <!-- Ввод снизу -->
       <div class="chat-input-area">
         <div class="chat-input-wrapper">
           <textarea
@@ -708,11 +692,10 @@
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import {
     getFirestore,
-    doc, setDoc, getDoc,
+    doc, setDoc, getDoc, deleteDoc,
     collection, addDoc,
     query, orderBy, onSnapshot,
-    serverTimestamp,
-    deleteDoc
+    serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -728,19 +711,19 @@
   const auth = getAuth(app);
   const db   = getFirestore(app);
 
-  const authPage      = document.getElementById('authPage');
-  const mainPage      = document.getElementById('mainPage');
-  const msgEl         = document.getElementById('msg');
-  const mainBtn       = document.getElementById('mainBtn');
-  const avatarEl      = document.getElementById('avatar');
-  const profileNameEl = document.getElementById('profileName');
-  const userEmailEl   = document.getElementById('userEmail');
-  const nameInput     = document.getElementById('name');
-  const messagesEl    = document.getElementById('messages');
-  const messageInput  = document.getElementById('messageInput');
-  const sendBtn       = document.getElementById('sendBtn');
-  const onlineList    = document.getElementById('onlineList');
-  const onlineCount   = document.getElementById('onlineCount');
+  const authPage       = document.getElementById('authPage');
+  const mainPage       = document.getElementById('mainPage');
+  const msgEl          = document.getElementById('msg');
+  const mainBtn        = document.getElementById('mainBtn');
+  const avatarEl       = document.getElementById('avatar');
+  const profileNameEl  = document.getElementById('profileName');
+  const userEmailEl    = document.getElementById('userEmail');
+  const nameInput      = document.getElementById('name');
+  const messagesEl     = document.getElementById('messages');
+  const messageInput   = document.getElementById('messageInput');
+  const sendBtn        = document.getElementById('sendBtn');
+  const onlineListEl   = document.getElementById('onlineList');
+  const onlineCountEl  = document.getElementById('onlineCount');
 
   let currentTab      = 'login';
   let currentUserName = '';
@@ -760,14 +743,17 @@
 
   function showMsg(text, type) {
     msgEl.textContent = text;
-    msgEl.className = type;
+    msgEl.className   = type;
   }
 
   window.handleAuth = async () => {
-    const emailVal    = document.getElementById('email').value;
+    const emailVal    = document.getElementById('email').value.trim();
     const passwordVal = document.getElementById('password').value;
 
-    if (!emailVal || !passwordVal) { showMsg('Заполните все поля', 'error'); return; }
+    if (!emailVal || !passwordVal) {
+      showMsg('Заполните все поля', 'error');
+      return;
+    }
 
     mainBtn.disabled    = true;
     mainBtn.textContent = 'Загрузка...';
@@ -815,14 +801,9 @@
     const user    = auth.currentUser;
 
     await setDoc(doc(db, "users", user.uid), { email: user.email, name: newName });
+    await setDoc(doc(db, "online", user.uid), { name: newName || user.email, uid: user.uid });
 
-    // Обновляем запись онлайн
-    await setDoc(doc(db, "online", user.uid), {
-      name: newName || user.email,
-      uid:  user.uid
-    });
-
-    currentUserName = newName;
+    currentUserName           = newName;
     profileNameEl.textContent = newName || 'Профиль';
     updateAvatar(newName || user.email);
     document.getElementById('profileDropdown').classList.remove('open');
@@ -845,8 +826,6 @@
   window.onInput = () => {
     const len = messageInput.value.length;
     document.getElementById('charCounter').textContent = 500 - len;
-
-    // Авторастягивание поля
     messageInput.style.height = 'auto';
     messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
   };
@@ -864,7 +843,8 @@
         uid:       auth.currentUser.uid,
         createdAt: serverTimestamp()
       });
-      messageInput.value = '';
+
+      messageInput.value        = '';
       messageInput.style.height = 'auto';
       document.getElementById('charCounter').textContent = '500';
     } catch (e) {
@@ -875,7 +855,7 @@
     messageInput.focus();
   };
 
-  // Enter — отправить, Shift+Enter — новая строка
+  // Enter отправляет, Shift+Enter — новая строка
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey && document.activeElement === messageInput) {
       e.preventDefault();
@@ -890,7 +870,7 @@
       if (snap.empty) {
         messagesEl.innerHTML = `
           <div class="empty-chat">
-            <div>💬</div>
+            <div class="empty-icon">💬</div>
             <p>Напишите первое сообщение!</p>
           </div>`;
         return;
@@ -899,17 +879,17 @@
       messagesEl.innerHTML = '';
 
       snap.forEach((d) => {
-        const data  = d.data();
+        const data   = d.data();
         const isMine = data.uid === currentUID;
-        const time  = data.createdAt
+        const time   = data.createdAt
           ? new Date(data.createdAt.seconds * 1000).toLocaleTimeString('ru', {
               hour: '2-digit', minute: '2-digit'
             })
           : '';
 
-        const msg = document.createElement('div');
-        msg.className = `message ${isMine ? 'mine' : ''}`;
-        msg.innerHTML = `
+        const el = document.createElement('div');
+        el.className = `message ${isMine ? 'mine' : ''}`;
+        el.innerHTML = `
           <div class="message-avatar">${data.author[0].toUpperCase()}</div>
           <div class="message-body">
             <div class="message-author">${isMine ? 'Вы' : data.author}</div>
@@ -917,7 +897,7 @@
             <div class="message-time">${time}</div>
           </div>
         `;
-        messagesEl.appendChild(msg);
+        messagesEl.appendChild(el);
       });
 
       // Скролл вниз
@@ -927,20 +907,79 @@
 
   // ======= ОНЛАЙН =======
 
-  async function setOnline(user, name) {
-    await setDoc(doc(db, "online", user.uid), {
-      name: name || user.email,
-      uid:  user.uid
+  function loadOnline() {
+    unsubOnline = onSnapshot(collection(db, "online"), (snap) => {
+      onlineListEl.innerHTML      = '';
+      onlineCountEl.textContent   = snap.size;
+
+      snap.forEach((d) => {
+        const data = d.data();
+        const isMe = data.uid === currentUID;
+
+        const el = document.createElement('div');
+        el.className = 'online-user';
+        el.innerHTML = `
+          <div class="online-user-avatar">${data.name[0].toUpperCase()}</div>
+          <span class="online-user-name">
+            ${data.name}
+            ${isMe ? '<span class="you-label">(ты)</span>' : ''}
+          </span>
+        `;
+        onlineListEl.appendChild(el);
+      });
     });
   }
 
-  function loadOnline() {
-    unsubOnline = onSnapshot(collection(db, "online"), (snap) => {
-      onlineList.innerHTML  = '';
-      onlineCount.textContent = snap.size;
+  // ======= СОСТОЯНИЕ АВТОРИЗАЦИИ =======
 
-      snap.forEach((d) => {
-        const data  = d.data();
-        const isMe  = data.uid === currentUID;
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUID = user.uid;
 
-        const el = document.createElement('div
+      authPage.style.display  = 'none';
+      mainPage.style.display  = 'flex';
+      userEmailEl.textContent = user.email;
+
+      // Загружаем профиль
+      const docSnap = await getDoc(doc(db, "users", user.uid));
+      if (docSnap.exists()) {
+        const data      = docSnap.data();
+        currentUserName = data.name || '';
+
+        nameInput.value           = currentUserName;
+        profileNameEl.textContent = currentUserName || 'Профиль';
+        updateAvatar(currentUserName || user.email);
+      }
+
+      // Записываем себя в онлайн
+      await setDoc(doc(db, "online", user.uid), {
+        name: currentUserName || user.email,
+        uid:  user.uid
+      });
+
+      // Запускаем слушателей
+      loadMessages();
+      loadOnline();
+
+      // Удаляем из онлайн если закрыл вкладку
+      window.addEventListener('beforeunload', async () => {
+        await deleteDoc(doc(db, "online", user.uid));
+      });
+
+    } else {
+      // Вышел из аккаунта
+      currentUID      = '';
+      currentUserName = '';
+
+      authPage.style.display = 'flex';
+      mainPage.style.display = 'none';
+
+      if (unsubMessages) unsubMessages();
+      if (unsubOnline)   unsubOnline();
+    }
+  });
+
+</script>
+
+</body>
+</html>
