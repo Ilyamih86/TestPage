@@ -14,11 +14,19 @@
     body {
       font-family: 'Arial', sans-serif;
       background: #0f0f0f;
+      color: #f1f1f1;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ========================
+       СТРАНИЦА АВТОРИЗАЦИИ
+    ======================== */
+    #authPage {
       display: flex;
       height: 100vh;
       align-items: center;
       justify-content: center;
-      color: #f1f1f1;
     }
 
     .box {
@@ -27,9 +35,9 @@
       border-radius: 12px;
       width: 360px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s ease;
     }
 
-    /* Логотип вверху */
     .logo {
       text-align: center;
       margin-bottom: 25px;
@@ -45,15 +53,31 @@
       color: #ff0000;
     }
 
-    h2 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #f1f1f1;
-      margin-bottom: 20px;
-      text-align: center;
+    .tabs {
+      display: flex;
+      background: #121212;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 25px;
     }
 
-    /* Поля ввода */
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #aaa;
+      transition: background 0.2s, color 0.2s;
+      user-select: none;
+    }
+
+    .tab.active {
+      background: #303030;
+      color: #f1f1f1;
+    }
+
     .input-group {
       position: relative;
       margin-bottom: 15px;
@@ -88,7 +112,6 @@
       color: #555;
     }
 
-    /* Кнопки */
     .btn {
       width: 100%;
       padding: 12px;
@@ -99,14 +122,10 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
       margin-top: 10px;
-      letter-spacing: 0.3px;
     }
 
-    .btn:active {
-      transform: scale(0.98);
-    }
+    .btn:active { transform: scale(0.98); }
 
-    /* Синяя кнопка (основная) */
     .btn-primary {
       background: #3ea6ff;
       color: #0f0f0f;
@@ -117,18 +136,11 @@
       box-shadow: 0 4px 15px rgba(62,166,255,0.3);
     }
 
-    /* Серая кнопка (второстепенная) */
-    .btn-secondary {
-      background: #303030;
-      color: #f1f1f1;
+    .btn-primary:disabled {
+      background: #2a5f8f;
+      cursor: not-allowed;
     }
 
-    .btn-secondary:hover {
-      background: #3f3f3f;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-
-    /* Красная кнопка (выход) */
     .btn-danger {
       background: transparent;
       color: #ff4444;
@@ -137,31 +149,8 @@
 
     .btn-danger:hover {
       background: rgba(255,68,68,0.1);
-      box-shadow: 0 4px 15px rgba(255,68,68,0.2);
     }
 
-    /* Разделитель */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #303030;
-    }
-
-    .divider span {
-      color: #555;
-      font-size: 13px;
-    }
-
-    /* Сообщения */
     #msg {
       font-size: 13px;
       text-align: center;
@@ -181,105 +170,362 @@
       color: #ff4444;
     }
 
-    /* Профиль */
-    #profile {
+    /* ========================
+       ГЛАВНАЯ СТРАНИЦА
+    ======================== */
+    #mainPage {
       display: none;
+      height: 100vh;
+      position: relative;
     }
 
-    /* Аватар */
+    /* --- Шапка вверху --- */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #212121;
+      border-bottom: 1px solid #303030;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+    }
+
+    .topbar-logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .topbar-logo b {
+      color: #ff0000;
+    }
+
+    /* --- Профиль в правом углу --- */
+    .profile-widget {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #2a2a2a;
+      padding: 6px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+    }
+
+    .profile-widget:hover {
+      background: #303030;
+    }
+
     .avatar {
-      width: 70px;
-      height: 70px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: #3ea6ff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 16px;
       font-weight: bold;
       color: #0f0f0f;
-      margin: 0 auto 20px;
       text-transform: uppercase;
+      flex-shrink: 0;
     }
 
-    /* Email пользователя */
-    .user-email {
-      text-align: center;
-      color: #aaa;
-      font-size: 13px;
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #303030;
-    }
-
-    /* Переключение форм */
-    .switch-text {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 13px;
-      color: #aaa;
-    }
-
-    .switch-text a {
-      color: #3ea6ff;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .switch-text a:hover {
-      text-decoration: underline;
-    }
-
-    /* Вкладки входа и регистрации */
-    .tabs {
+    .profile-info {
       display: flex;
-      background: #121212;
-      border-radius: 8px;
-      padding: 4px;
-      margin-bottom: 25px;
+      flex-direction: column;
     }
 
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 8px;
-      border-radius: 6px;
-      cursor: pointer;
+    .profile-name {
       font-size: 14px;
-      color: #aaa;
-      transition: background 0.2s, color 0.2s;
-      user-select: none;
-    }
-
-    .tab.active {
-      background: #303030;
+      font-weight: 600;
       color: #f1f1f1;
     }
 
-    /* Анимация появления */
+    .profile-email {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* Выпадающее меню профиля */
+    .profile-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #212121;
+      border: 1px solid #303030;
+      border-radius: 10px;
+      padding: 10px;
+      width: 220px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      z-index: 200;
+    }
+
+    .profile-dropdown.open {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .dropdown-input-group {
+      margin-bottom: 10px;
+    }
+
+    .dropdown-input-group label {
+      display: block;
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+
+    .dropdown-input-group input {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .dropdown-btn {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 5px;
+    }
+
+    .dropdown-btn-save {
+      background: #3ea6ff;
+      color: #0f0f0f;
+    }
+
+    .dropdown-btn-save:hover {
+      background: #65b8ff;
+    }
+
+    .dropdown-btn-logout {
+      background: transparent;
+      color: #ff4444;
+      border: 1px solid #ff4444;
+    }
+
+    .dropdown-btn-logout:hover {
+      background: rgba(255,68,68,0.1);
+    }
+
+    /* ========================
+       ОСНОВНОЙ LAYOUT
+    ======================== */
+    .layout {
+      display: flex;
+      height: 100vh;
+      padding-top: 60px;
+    }
+
+    /* --- Боковая панель с сообщениями --- */
+    .sidebar {
+      width: 280px;
+      background: #181818;
+      border-right: 1px solid #303030;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header {
+      padding: 15px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #aaa;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #303030;
+      text-transform: uppercase;
+    }
+
+    .messages-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .messages-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .messages-list::-webkit-scrollbar-track {
+      background: #181818;
+    }
+
+    .messages-list::-webkit-scrollbar-thumb {
+      background: #303030;
+      border-radius: 2px;
+    }
+
+    /* Одно сообщение в списке */
+    .msg-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      background: #212121;
+      border: 1px solid #2a2a2a;
+      animation: fadeIn 0.3s ease;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .msg-item:hover {
+      background: #2a2a2a;
+    }
+
+    .msg-item-author {
+      font-size: 12px;
+      font-weight: 600;
+      color: #3ea6ff;
+      margin-bottom: 4px;
+    }
+
+    .msg-item-text {
+      font-size: 13px;
+      color: #ccc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .msg-item-time {
+      font-size: 11px;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    /* --- Центральная область --- */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    /* Блок ввода сообщения */
+    .chat-box {
+      background: #212121;
+      border-radius: 12px;
+      padding: 25px;
+      width: 100%;
+      max-width: 550px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .chat-box h3 {
+      font-size: 16px;
+      color: #f1f1f1;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #303030;
+    }
+
+    .chat-textarea {
+      width: 100%;
+      padding: 12px 15px;
+      background: #121212;
+      border: 1px solid #303030;
+      border-radius: 8px;
+      color: #f1f1f1;
+      font-size: 15px;
+      outline: none;
+      resize: none;
+      font-family: Arial, sans-serif;
+      transition: border-color 0.2s;
+      height: 120px;
+    }
+
+    .chat-textarea:focus {
+      border-color: #3ea6ff;
+      box-shadow: 0 0 0 2px rgba(62,166,255,0.15);
+    }
+
+    .chat-textarea::placeholder {
+      color: #555;
+    }
+
+    .chat-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .char-counter {
+      font-size: 12px;
+      color: #555;
+    }
+
+    .send-btn {
+      padding: 10px 25px;
+      background: #3ea6ff;
+      color: #0f0f0f;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .send-btn:hover {
+      background: #65b8ff;
+    }
+
+    .send-btn:active {
+      transform: scale(0.97);
+    }
+
+    .send-btn:disabled {
+      background: #2a5f8f;
+      cursor: not-allowed;
+    }
+
+    /* Пустое состояние */
+    .empty-state {
+      text-align: center;
+      color: #555;
+      padding: 30px;
+    }
+
+    .empty-state div {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .box {
-      animation: fadeIn 0.3s ease;
     }
   </style>
 </head>
 <body>
 
-<div class="box">
+<!-- ========================
+     СТРАНИЦА АВТОРИЗАЦИИ
+======================== -->
+<div id="authPage">
+  <div class="box">
+    <div class="logo">
+      <span>My<b>App</b></span>
+    </div>
 
-  <!-- ЛОГОТИП -->
-  <div class="logo">
-    <span>My<b>App</b></span>
-  </div>
-
-  <!-- AUTH -->
-  <div id="auth">
-
-    <!-- Вкладки -->
     <div class="tabs">
       <div class="tab active" id="tab-login" onclick="switchTab('login')">Вход</div>
       <div class="tab" id="tab-register" onclick="switchTab('register')">Регистрация</div>
@@ -295,40 +541,82 @@
       <input type="password" id="password" placeholder="••••••••">
     </div>
 
-    <!-- Кнопка меняется в зависимости от вкладки -->
     <button class="btn btn-primary" id="mainBtn" onclick="handleAuth()">
       Войти
     </button>
 
     <p id="msg"></p>
+  </div>
+</div>
 
+<!-- ========================
+     ГЛАВНАЯ СТРАНИЦА
+======================== -->
+<div id="mainPage">
+
+  <!-- Шапка -->
+  <div class="topbar">
+    <div class="topbar-logo">My<b>App</b></div>
+
+    <!-- Профиль в правом углу -->
+    <div class="profile-widget" onclick="toggleDropdown()">
+      <div class="avatar" id="avatar">?</div>
+      <div class="profile-info">
+        <span class="profile-name" id="profileName">Загрузка...</span>
+        <span class="profile-email" id="userEmail"></span>
+      </div>
+
+      <!-- Выпадающее меню -->
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="dropdown-input-group">
+          <label>НИКНЕЙМ</label>
+          <input type="text" id="name" placeholder="Введите никнейм">
+        </div>
+        <button class="dropdown-btn dropdown-btn-save" onclick="saveProfile(event)">
+          Сохранить
+        </button>
+        <button class="dropdown-btn dropdown-btn-logout" onclick="logout(event)">
+          Выйти
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- PROFILE -->
-  <div id="profile">
+  <!-- Layout -->
+  <div class="layout">
 
-    <!-- Аватар с первой буквой имени -->
-    <div class="avatar" id="avatar">?</div>
-
-    <h2 id="profileName">Профиль</h2>
-
-    <p class="user-email" id="userEmail"></p>
-
-    <div class="input-group">
-      <label>ВАШ НИКНЕЙМ</label>
-      <input type="text" id="name" placeholder="Введите никнейм">
+    <!-- Боковая панель -->
+    <div class="sidebar">
+      <div class="sidebar-header">💬 Сообщения</div>
+      <div class="messages-list" id="messagesList">
+        <div class="empty-state">
+          <div>📭</div>
+          <p>Сообщений пока нет</p>
+        </div>
+      </div>
     </div>
 
-    <button class="btn btn-primary" onclick="saveProfile()">
-      Сохранить изменения
-    </button>
-
-    <button class="btn btn-danger" onclick="logout()" style="margin-top: 10px">
-      Выйти из аккаунта
-    </button>
+    <!-- Центр -->
+    <div class="main-content">
+      <div class="chat-box">
+        <h3>✏️ Новое сообщение</h3>
+        <textarea
+          class="chat-textarea"
+          id="messageInput"
+          placeholder="Напишите что-нибудь..."
+          maxlength="500"
+          oninput="updateCounter()"
+        ></textarea>
+        <div class="chat-footer">
+          <span class="char-counter" id="charCounter">0 / 500</span>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+            Отправить
+          </button>
+        </div>
+      </div>
+    </div>
 
   </div>
-
 </div>
 
 <script type="module">
@@ -344,7 +632,13 @@
     getFirestore,
     doc,
     setDoc,
-    getDoc
+    getDoc,
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    onSnapshot,
+    serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -360,19 +654,23 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  const msgEl = document.getElementById('msg');
-  const authBlock = document.getElementById('auth');
-  const profileBlock = document.getElementById('profile');
-  const userEmailEl = document.getElementById('userEmail');
-  const nameInput = document.getElementById('name');
-  const avatarEl = document.getElementById('avatar');
+  const msgEl        = document.getElementById('msg');
+  const authPage     = document.getElementById('authPage');
+  const mainPage     = document.getElementById('mainPage');
+  const userEmailEl  = document.getElementById('userEmail');
+  const nameInput    = document.getElementById('name');
+  const avatarEl     = document.getElementById('avatar');
   const profileNameEl = document.getElementById('profileName');
-  const mainBtn = document.getElementById('mainBtn');
+  const mainBtn      = document.getElementById('mainBtn');
+  const messagesList = document.getElementById('messagesList');
+  const messageInput = document.getElementById('messageInput');
+  const sendBtn      = document.getElementById('sendBtn');
 
-  // Текущая вкладка
   let currentTab = 'login';
+  let currentUserName = '';
+  let unsubscribeMessages = null;
 
-  // Переключение вкладок
+  // --- Вкладки ---
   window.switchTab = (tab) => {
     currentTab = tab;
     document.getElementById('tab-login').classList.toggle('active', tab === 'login');
@@ -381,15 +679,14 @@
     showMsg('', '');
   };
 
-  // Показ сообщений
   function showMsg(text, type) {
     msgEl.textContent = text;
     msgEl.className = type;
   }
 
-  // Обработка кнопки входа/регистрации
+  // --- Авторизация ---
   window.handleAuth = async () => {
-    const emailValue = document.getElementById('email').value;
+    const emailValue    = document.getElementById('email').value;
     const passwordValue = document.getElementById('password').value;
 
     if (!emailValue || !passwordValue) {
@@ -412,13 +709,12 @@
         await signInWithEmailAndPassword(auth, emailValue, passwordValue);
       }
     } catch (e) {
-      // Понятные сообщения об ошибках
       const errors = {
-        'auth/invalid-email': 'Неверный формат email',
-        'auth/wrong-password': 'Неверный пароль',
-        'auth/user-not-found': 'Пользователь не найден',
+        'auth/invalid-email':        'Неверный формат email',
+        'auth/wrong-password':       'Неверный пароль',
+        'auth/user-not-found':       'Пользователь не найден',
         'auth/email-already-in-use': 'Email уже используется',
-        'auth/weak-password': 'Пароль слишком короткий (минимум 6 символов)',
+        'auth/weak-password':        'Минимум 6 символов',
       };
       showMsg(errors[e.code] || e.message, 'error');
     }
@@ -427,50 +723,150 @@
     mainBtn.disabled = false;
   };
 
-  // Сохранение профиля
-  window.saveProfile = async () => {
+  // --- Сохранение профиля ---
+  window.saveProfile = async (e) => {
+    e.stopPropagation();
     const user = auth.currentUser;
-    const newName = nameInput.value;
+    const newName = nameInput.value.trim();
 
     await setDoc(doc(db, "users", user.uid), {
       email: user.email,
       name: newName
     });
 
-    // Обновляем аватар и имя
+    currentUserName = newName;
     updateAvatar(newName || user.email);
     profileNameEl.textContent = newName || 'Профиль';
-
+    document.getElementById('profileDropdown').classList.remove('open');
     alert("Сохранено ✅");
   };
 
-  // Выход
-  window.logout = async () => {
+  // --- Выход ---
+  window.logout = async (e) => {
+    e.stopPropagation();
+    if (unsubscribeMessages) unsubscribeMessages();
     await signOut(auth);
   };
 
-  // Обновление аватара
+  // --- Дропдаун ---
+  window.toggleDropdown = () => {
+    document.getElementById('profileDropdown').classList.toggle('open');
+  };
+
+  // Закрыть дропдаун при клике вне
+  document.addEventListener('click', (e) => {
+    const widget = document.querySelector('.profile-widget');
+    if (widget && !widget.contains(e.target)) {
+      document.getElementById('profileDropdown').classList.remove('open');
+    }
+  });
+
+  // --- Счётчик символов ---
+  window.updateCounter = () => {
+    const len = messageInput.value.length;
+    document.getElementById('charCounter').textContent = `${len} / 500`;
+  };
+
+  // --- Отправка сообщения ---
+  window.sendMessage = async () => {
+    const text = messageInput.value.trim();
+    if (!text) return;
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Отправка...';
+
+    try {
+      await addDoc(collection(db, "messages"), {
+        text: text,
+        author: currentUserName || auth.currentUser.email,
+        uid: auth.currentUser.uid,
+        createdAt: serverTimestamp()
+      });
+
+      messageInput.value = '';
+      updateCounter();
+    } catch (e) {
+      alert('Ошибка отправки: ' + e.message);
+    }
+
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Отправить';
+  };
+
+  // --- Загрузка сообщений в реальном времени ---
+  function loadMessages() {
+    const q = query(
+      collection(db, "messages"),
+      orderBy("createdAt", "desc")
+    );
+
+    unsubscribeMessages = onSnapshot(q, (snapshot) => {
+      if (snapshot.empty) {
+        messagesList.innerHTML = `
+          <div class="empty-state">
+            <div>📭</div>
+            <p>Сообщений пока нет</p>
+          </div>
+        `;
+        return;
+      }
+
+      messagesList.innerHTML = '';
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const time = data.createdAt
+          ? new Date(data.createdAt.seconds * 1000).toLocaleTimeString('ru', {
+              hour: '2-digit', minute: '2-digit'
+            })
+          : '';
+
+        const item = document.createElement('div');
+        item.className = 'msg-item';
+        item.innerHTML = `
+          <div class="msg-item-author">${data.author}</div>
+          <div class="msg-item-text">${data.text}</div>
+          <div class="msg-item-time">${time}</div>
+        `;
+        messagesList.appendChild(item);
+      });
+    });
+  }
+
+  // --- Аватар ---
   function updateAvatar(text) {
     avatarEl.textContent = text ? text[0].toUpperCase() : '?';
   }
 
-  // Отслеживание состояния авторизации
+  // --- Состояние авторизации ---
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      authBlock.style.display = "none";
-      profileBlock.style.display = "block";
+      authPage.style.display = 'none';
+      mainPage.style.display = 'block';
+
       userEmailEl.textContent = user.email;
 
       const docSnap = await getDoc(doc(db, "users", user.uid));
       if (docSnap.exists()) {
         const data = docSnap.data();
-        nameInput.value = data.name || "";
-        profileNameEl.textContent = data.name || "Профиль";
-        updateAvatar(data.name || user.email);
+        currentUserName = data.name || '';
+        nameInput.value = currentUserName;
+        profileNameEl.textContent = currentUserName || 'Профиль';
+        updateAvatar(currentUserName || user.email);
       }
+
+      loadMessages();
+
     } else {
-      authBlock.style.display = "block";
-      profileBlock.style.display = "none";
+      authPage.style.display = 'flex';
+      mainPage.style.display = 'none';
+    }
+  });
+
+  // Отправка по Ctrl+Enter
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') {
+      sendMessage();
     }
   });
 
