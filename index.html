@@ -26,16 +26,28 @@
       width: 100%;
       margin-top: 10px;
       padding: 10px;
+      box-sizing: border-box;
     }
 
     button {
       background: #4CAF50;
       color: white;
       border: none;
+      border-radius: 5px;
       cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #388E3C;
     }
 
     #profile { display: none; }
+
+    #msg {
+      color: red;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -55,12 +67,9 @@
   <!-- PROFILE -->
   <div id="profile">
     <h2>Профиль</h2>
-
     <input type="text" id="name" placeholder="Ваше имя">
     <button onclick="saveProfile()">Сохранить</button>
-
     <p id="userEmail"></p>
-
     <button onclick="logout()">Выйти</button>
   </div>
 
@@ -75,7 +84,6 @@
     signOut,
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
   import {
     getFirestore,
     doc,
@@ -89,10 +97,8 @@
     projectId: "testpage-da094",
     storageBucket: "testpage-da094.firebasestorage.app",
     messagingSenderId: "938184243668",
-    appId: "1:938184243668:web:2cb527ec7f5cd41e0a7e41",
-    measurementId: "G-5MF3D79SSD"
+    appId: "1:938184243668:web:2cb527ec7f5cd41e0a7e41"
   };
-
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -101,40 +107,44 @@
   const msg = document.getElementById('msg');
   const authBlock = document.getElementById('auth');
   const profileBlock = document.getElementById('profile');
-  const userEmail = document.getElementById('userEmail');
+  const userEmailEl = document.getElementById('userEmail');
   const nameInput = document.getElementById('name');
 
-  // Регистрация
+  // ✅ Исправлена ошибка с именами переменных
   window.register = async () => {
-    const email = email.value;
-    const password = password.value;
+    const emailValue = document.getElementById('email').value;
+    const passwordValue = document.getElementById('password').value;
 
     try {
-      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      const userCred = await createUserWithEmailAndPassword(auth, emailValue, passwordValue);
 
-      // создаём профиль
       await setDoc(doc(db, "users", userCred.user.uid), {
-        email: email,
+        email: emailValue,
         name: ""
       });
 
+      msg.style.color = "green";
       msg.innerText = "Регистрация успешна ✅";
     } catch (e) {
+      msg.style.color = "red";
       msg.innerText = e.message;
     }
   };
 
-  // Вход
+  // ✅ Исправлена ошибка с именами переменных
   window.login = async () => {
+    const emailValue = document.getElementById('email').value;
+    const passwordValue = document.getElementById('password').value;
+
     try {
-      await signInWithEmailAndPassword(auth, email.value, password.value);
-      msg.innerText = "Вход выполнен";
+      await signInWithEmailAndPassword(auth, emailValue, passwordValue);
+      msg.innerText = "";
     } catch (e) {
+      msg.style.color = "red";
       msg.innerText = e.message;
     }
   };
 
-  // Сохранение профиля
   window.saveProfile = async () => {
     const user = auth.currentUser;
 
@@ -146,26 +156,20 @@
     alert("Сохранено ✅");
   };
 
-  // Выход
   window.logout = async () => {
     await signOut(auth);
   };
 
-  // Загрузка профиля
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       authBlock.style.display = "none";
       profileBlock.style.display = "block";
+      userEmailEl.innerText = "Email: " + user.email;
 
-      userEmail.innerText = "Email: " + user.email;
-
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-
+      const docSnap = await getDoc(doc(db, "users", user.uid));
       if (docSnap.exists()) {
         nameInput.value = docSnap.data().name || "";
       }
-
     } else {
       authBlock.style.display = "block";
       profileBlock.style.display = "none";
